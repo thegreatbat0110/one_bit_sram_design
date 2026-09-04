@@ -29,8 +29,8 @@
 13. [SNM](#snm)
 14. [Discussion](#discussion)
 15. [Conclusion](#conclusion)
-16. [Possible Future Work](#Possible-Future-Work)
-17. [References](#References)
+16. [Possible Future Work](#possible-future-work)
+17. [References](#references)
 ---
 
 ## Objective
@@ -98,7 +98,7 @@ $$PR = \frac{W_{PU}}{W_{ACC}} = \frac{0.55}{0.55} = 1$$
 |~70 ns | Write 1|
 |~90 ns|  Read 1|
 
-![]Week 2 and 3/Waveforms/wave_one_bit_final2.png
+![](Week_2_and_3/Waveforms/wave_one_bit_final2.png)
 
 During write-0, Q is driven LOW and QB HIGH. The state is retained until the read operation. During read-0, DOUT remains LOW without disturbing the stored value. During write-1, Q is driven HIGH and QB LOW. During read-1, DOUT transitions HIGH and the stored state remains stable.
 
@@ -114,7 +114,7 @@ During write-0, Q is driven LOW and QB HIGH. The state is retained until the rea
 
 ## Timing Definitions
 
-All delays are measured from the 50% crossing of the control signal to the 50% (or 10%/90%) crossing of the output node. [Reference] (https://www.researchgate.net/publication/281835010_8T_Double-Ended_Read-Decoupled_SRAM_Cell
+All delays are measured from the 50% crossing of the control signal to the 50% (or 10%/90%) crossing of the output node. [Reference] (https://www.researchgate.net/publication/281835010_8T_Double-Ended_Read-Decoupled_SRAM_Cell)
 
 **Write-0 @ 50%:**
 
@@ -174,7 +174,7 @@ The write-0 and write-1 delays are closely matched, indicating reasonably symmet
 
 Raw Measurements - 
 
-![]Week 2 and 3/raw_measurements.jpg
+![](Week_2_and_3/raw_measurements.jpg)
 
 | Parameter | FF | TT | SS | Trend / Comment |
 |---|---:|---:|---:|---|
@@ -265,7 +265,7 @@ Leakage is state-dependent because different transistor stacks are OFF for store
 
 ### Hold SNM
 
-![]Week 2 and 3/Waveforms/wave_hold_snm.png
+![](Week 2 and 3/Waveforms/wave_hold_snm.png)
 
 - Method: DC sweep of cross-coupled inverter transfer curves
 - Metric: Side length of largest inscribed square in the butterfly
@@ -273,7 +273,7 @@ Leakage is state-dependent because different transistor stacks are OFF for store
 
 ### Read SNM
 
-![]Week 2 and 3/Waveforms/wave_read_snm.png
+![](Week 2 and 3/Waveforms/wave_read_snm.png)
 
 - Condition: WL = ON, BL/BLB precharged to VDD
 - Method: Butterfly curve with access transistors active
@@ -281,7 +281,7 @@ Leakage is state-dependent because different transistor stacks are OFF for store
 
 ### Write SNM / Write Margin
 
-![]Week 2 and 3/Waveforms/wave_write_snm.png
+![](Week 2 and 3/Waveforms/wave_write_snm.png)
 
 - Condition: Write driver asserting BL/BLB, WL = ON
 - Method: Butterfly Curve
@@ -301,7 +301,7 @@ A functional 1-bit SRAM was designed and characterized using SKY130 devices. Cor
 
 ---
 
-###Possible Future Work
+## Possible Future Work
 
 -Layouts and Post Layout simulation .
 
@@ -309,7 +309,7 @@ A functional 1-bit SRAM was designed and characterized using SKY130 devices. Cor
 
 ---
 
-###References
+## References
 
 -Design of 1024x32 SRAM (32Kbits) using OpenRAM and SKY130 PDKs by Shon Taware : https://github.com/ShonTaware/SRAM_SKY130
 
