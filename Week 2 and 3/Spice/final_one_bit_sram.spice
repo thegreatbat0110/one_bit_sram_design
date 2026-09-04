@@ -8,7 +8,7 @@ x3 wl VDD blb bl Q QB six_t
 
 
 **** begin user architecture code
-
+**change tt at end of .lib line to ss and ff
 .lib /home/kaavya/.ciel/ciel/sky130/versions/9233c19260cd813c3fa67dd4594fe4cc67016832/sky130A/libs.tech/ngspice/sky130.lib.spice tt
 
 *------------------------------------------------------------------------------
@@ -127,21 +127,289 @@ Vdin din gnd PWL
 
 .tran 0.1p 100n
 .temp 27
+*==============================================================================
+* 1. WRITE DELAY
+*==============================================================================
 
 *------------------------------------------------------------------------------
-* MEASUREMENTS
+* WRITE 0 @ ~10 ns
+*
+* Initial:
+* Q = 1.8 V
+*
+* Final:
+* Q = 0 V
 *------------------------------------------------------------------------------
 
-.meas tran t_write1 TRIG v(wl) VAL=0.9 RISE=1 TARG v(Q)    VAL=0.9 RISE=1
+* 50%-to-50% write delay
+.meas tran t_write0_50
++ TRIG v(wl) VAL=0.9 RISE=1 TD=9n
++ TARG v(Q)  VAL=0.9 FALL=1 TD=9n
 
-.meas tran t_read1  TRIG v(read_en) VAL=0.9 RISE=1 TARG v(dout) VAL=0.9 RISE=1
+* Write completion:
+* WL @ 50% -> Q reaches 10% VDD
+.meas tran t_write0_10
++ TRIG v(wl) VAL=0.9 RISE=1 TD=9n
++ TARG v(Q)  VAL=0.18 FALL=1 TD=9n
 
-.meas tran t_write0 TRIG v(wl) VAL=0.9 RISE=3 TARG v(Q)    VAL=0.9 FALL=1
 
-.meas tran t_read0  TRIG v(read_en) VAL=0.9 RISE=2 TARG v(dout) VAL=0.9 FALL=1
-.save v(prec) v(wl) v(write_en) v(read_en) v(din) v(Q) v(QB) v(bl) v(blb) v(dout)
-.save v(x4.net1) v(x4.net2) v(x4.net3) v(x4.net4) v(x4.dout_b) v(x4.read_en_b)
+*------------------------------------------------------------------------------
+* WRITE 1 @ ~70 ns
+*
+* Initial:
+* Q = 0 V
+*
+* Final:
+* Q = 1.8 V
+*------------------------------------------------------------------------------
+
+* 50%-to-50% write delay
+.meas tran t_write1_50
++ TRIG v(wl) VAL=0.9 RISE=1 TD=69n
++ TARG v(Q)  VAL=0.9 RISE=1 TD=69n
+
+* Write completion:
+* WL @ 50% -> Q reaches 90% VDD
+.meas tran t_write1_90
++ TRIG v(wl) VAL=0.9 RISE=1 TD=69n
++ TARG v(Q)  VAL=1.62 RISE=1 TD=69n
+
+
+*==============================================================================
+* 2. FUNCTIONAL STATE VERIFICATION
+*==============================================================================
+
+* After WRITE 0
+* Expected Q ~ 0 V, QB ~ 1.8 V
+.meas tran q_after_write0
++ FIND v(Q) AT=18n
+
+.meas tran qb_after_write0
++ FIND v(QB) AT=18n
+
+
+* During READ 0
+.meas tran q_during_read0
++ FIND v(Q) AT=52n
+
+.meas tran qb_during_read0
++ FIND v(QB) AT=52n
+
+.meas tran dout_read0
++ FIND v(dout) AT=52n
+
+
+* After WRITE 1
+* Expected Q ~ 1.8 V, QB ~ 0 V
+.meas tran q_after_write1
++ FIND v(Q) AT=78n
+
+.meas tran qb_after_write1
++ FIND v(QB) AT=78n
+
+
+* During READ 1
+.meas tran q_during_read1
++ FIND v(Q) AT=92n
+
+.meas tran qb_during_read1
++ FIND v(QB) AT=92n
+
+.meas tran dout_read1
++ FIND v(dout) AT=92n
+
+
+*==============================================================================
+* 3. READ ACCESS TIME
+*==============================================================================
+
+*------------------------------------------------------------------------------
+* READ 0
+*
+* DOUT is already LOW before READ 0 in the present output architecture.
+* Therefore there is no meaningful HIGH -> LOW propagation transition.
+*
+* Functional correctness is verified using dout_read0.
+*------------------------------------------------------------------------------
+
+
+*------------------------------------------------------------------------------
+* READ 1 @ ~90 ns
+*
+* read_en 50% -> DOUT 50%
+*------------------------------------------------------------------------------
+
+.meas tran t_read1_50
++ TRIG v(read_en) VAL=0.9 RISE=1 TD=89n
++ TARG v(dout)    VAL=0.9 RISE=1 TD=89n
+
+
+* read_en 50% -> DOUT 90%
+.meas tran t_read1_90
++ TRIG v(read_en) VAL=0.9 RISE=1 TD=89n
++ TARG v(dout)    VAL=1.62 RISE=1 TD=89n
+
+
+*==============================================================================
+* 4. READ DISTURB
+*==============================================================================
+
+*------------------------------------------------------------------------------
+* READ 0 @ ~50 ns
+*
+* Stored state:
+* Q  = LOW
+* QB = HIGH
+*
+* Therefore Q is the vulnerable LOW storage node.
+*------------------------------------------------------------------------------
+
+.meas tran q_before_read0 AVG v(Q)
++ FROM=49n TO=50n
+
+.meas tran q_read0_max MAX v(Q)
++ FROM=50.18n TO=51.06n
+
+.meas tran read0_disturb
++ PARAM='q_read0_max-q_before_read0'
+
+
+*------------------------------------------------------------------------------
+* READ 1 @ ~90 ns
+*
+* Stored state:
+* Q  = HIGH
+* QB = LOW
+*
+* Therefore QB is the vulnerable LOW storage node.
+*------------------------------------------------------------------------------
+
+.meas tran qb_before_read1 AVG v(QB)
++ FROM=89n TO=90n
+
+.meas tran qb_read1_max MAX v(QB)
++ FROM=90.18n TO=91.06n
+
+.meas tran read1_disturb
++ PARAM='qb_read1_max-qb_before_read1'
+
+
+*==============================================================================
+* 5. BITLINE DIFFERENTIAL
+*==============================================================================
+
+* READ 0
+.meas tran bl_read0
++ FIND v(bl) AT=50.8n
+
+.meas tran blb_read0
++ FIND v(blb) AT=50.8n
+
+.meas tran delta_bl_read0
++ PARAM='abs(bl_read0-blb_read0)'
+
+
+* READ 1
+.meas tran bl_read1
++ FIND v(bl) AT=90.8n
+
+.meas tran blb_read1
++ FIND v(blb) AT=90.8n
+
+.meas tran delta_bl_read1
++ PARAM='abs(bl_read1-blb_read1)'
+
+
+*==============================================================================
+* 6. STANDBY LEAKAGE
+*==============================================================================
+
+*------------------------------------------------------------------------------
+* Stored 0
+* Quiet interval after WRITE 0
+*------------------------------------------------------------------------------
+
+.meas tran ileak0 AVG i(V1)
++ FROM=30n TO=39n
+
+.meas tran ileak0_abs
++ PARAM='abs(ileak0)'
+
+.meas tran pleak0
++ PARAM='1.8*abs(ileak0)'
+
+
+*------------------------------------------------------------------------------
+* Stored 1
+* Quiet interval after WRITE 1
+*------------------------------------------------------------------------------
+
+.meas tran ileak1 AVG i(V1)
++ FROM=77n TO=79n
+
+.meas tran ileak1_abs
++ PARAM='abs(ileak1)'
+
+.meas tran pleak1
++ PARAM='1.8*abs(ileak1)'
+
+
+*==============================================================================
+* 7. ACTIVE-WINDOW ENERGY
+*==============================================================================
+
+* WRITE 0
+.meas tran e_write0
++ INTEG par('abs(v(vdd)*i(V1))')
++ FROM=10n TO=16.5n
+
+
+* READ 0
+.meas tran e_read0
++ INTEG par('abs(v(vdd)*i(V1))')
++ FROM=50n TO=53.5n
+
+
+* WRITE 1
+.meas tran e_write1
++ INTEG par('abs(v(vdd)*i(V1))')
++ FROM=70n TO=76.5n
+
+
+* READ 1
+.meas tran e_read1
++ INTEG par('abs(v(vdd)*i(V1))')
++ FROM=90n TO=93.5n
+
+
+*==============================================================================
+* 8. HOLD / RETENTION CHECK
+*==============================================================================
+
+* Hold stored 0
+.meas tran q_hold0_avg AVG v(Q)
++ FROM=30n TO=39n
+
+.meas tran qb_hold0_avg AVG v(QB)
++ FROM=30n TO=39n
+
+
+* Hold stored 1
+.meas tran q_hold1_avg AVG v(Q)
++ FROM=77n TO=79n
+
+.meas tran qb_hold1_avg AVG v(QB)
++ FROM=77n TO=79n
+
+
+*==============================================================================
+* SAVE / CONTROL
+*==============================================================================
+
+.save all
+
 .control
+
 run
 
 plot bl+2 blb
