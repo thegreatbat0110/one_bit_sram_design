@@ -50,7 +50,7 @@ The top-level design consists of the following blocks:
 | Write driver | Forces BL/BLB during write operations |
 | Sense amplifier | Generates DOUT during read operations |
 
-These circuits have been further elaborated [here](Week 2 and 3/readme.md) .
+These circuits have been further elaborated [here](Week_2_and_3/readme.md) .
 
 ---
 
@@ -114,7 +114,7 @@ During write-0, Q is driven LOW and QB HIGH. The state is retained until the rea
 
 ## Timing Definitions
 
-All delays are measured from the 50% crossing of the control signal to the 50% (or 10%/90%) crossing of the output node. [Reference] (https://www.researchgate.net/publication/281835010_8T_Double-Ended_Read-Decoupled_SRAM_Cell)
+All delays are measured from the 50% crossing of the control signal to the 50% (or 10%/90%) crossing of the output node. [Reference](https://www.researchgate.net/publication/281835010_8T_Double-Ended_Read-Decoupled_SRAM_Cell)
 
 **Write-0 @ 50%:**
 
@@ -152,14 +152,14 @@ $$t_{read1,90} = t(DOUT = 1.62\,\text{V}) - t(read\_en = 0.9\,\text{V})$$
 | Write-1 @ 90% (completion) | 0.743 ns |
 | Read-1 @ 50% | 0.208 ns |
 | Read-1 @ 90% | 0.264 ns |
-| Read disturb — stored 0 | 131.4 mV |
-| Read disturb — stored 1 | 131.4 mV |
-| ΔBL — Read 0 | 432.8 mV |
-| ΔBL — Read 1 | 442.7 mV |
-| Leakage current — stored 0 | 3.247 nA |
-| Leakage current — stored 1 | 1.680 nA |
-| Leakage power — stored 0 | 5.845 nW |
-| Leakage power — stored 1 | 3.025 nW |
+| Read disturb (stored 0) | 131.4 mV |
+| Read disturb (stored 1) | 131.4 mV |
+| ΔBL Read 0 | 432.8 mV |
+| ΔBL Read 1 | 442.7 mV |
+| Leakage current (stored 0) | 3.247 nA |
+| Leakage current (stored 1) | 1.680 nA |
+| Leakage power (stored 0) | 5.845 nW |
+| Leakage power (stored 1) | 3.025 nW |
 | Write-0 active-window energy | 44.04 fJ |
 | Write-1 active-window energy | 43.66 fJ |
 | Read-0 active-window energy | 79.68 fJ |
@@ -184,14 +184,14 @@ Raw Measurements -
 | Write-1 @ 90% | **0.628 ns** | **0.743 ns** | **0.920 ns** | SS > TT > FF ✅ |
 | Read-1 @ 50% | **0.165 ns** | **0.208 ns** | **0.277 ns** | SS > TT > FF ✅ |
 | Read-1 @ 90% | **0.208 ns** | **0.264 ns** | **0.350 ns** | SS > TT > FF ✅ |
-| Read disturb — stored 0 | **138.2 mV** | **131.4 mV** | **121.9 mV** | FF > TT > SS✅ |
-| Read disturb — stored 1 | **138.2 mV** | **131.4 mV** | **121.7 mV** | FF > TT > SS✅ |
-| ΔBL — Read 0 | **553.4 mV** | **432.8 mV** | **309.9 mV** | FF > TT > SS ✅ |
-| ΔBL — Read 1 | **559.8 mV** | **442.7 mV** | **324.9 mV** | FF > TT > SS ✅ |
-| Leakage current — stored 0 | **12.67 nA** | **3.247 nA** | **4.129 nA** | Strong corner/state dependence |
-| Leakage current — stored 1 | **25.20 nA** | **1.680 nA** | **0.800 nA** | Strong corner/state dependence |
-| Leakage power — stored 0 | **22.80 nW** | **5.845 nW** | **7.432 nW** | Follows leakage current |
-| Leakage power — stored 1 | **45.35 nW** | **3.025 nW** | **1.439 nW** | Follows leakage current |
+| Read disturb - stored 0 | **138.2 mV** | **131.4 mV** | **121.9 mV** | FF > TT > SS✅ |
+| Read disturb - stored 1 | **138.2 mV** | **131.4 mV** | **121.7 mV** | FF > TT > SS✅ |
+| ΔBL - Read 0 | **553.4 mV** | **432.8 mV** | **309.9 mV** | FF > TT > SS ✅ |
+| ΔBL - Read 1 | **559.8 mV** | **442.7 mV** | **324.9 mV** | FF > TT > SS ✅ |
+| Leakage current - stored 0 | **12.67 nA** | **3.247 nA** | **4.129 nA** | Strong corner/state dependence |
+| Leakage current - stored 1 | **25.20 nA** | **1.680 nA** | **0.800 nA** | Strong corner/state dependence |
+| Leakage power - stored 0 | **22.80 nW** | **5.845 nW** | **7.432 nW** | Follows leakage current |
+| Leakage power - stored 1 | **45.35 nW** | **3.025 nW** | **1.439 nW** | Follows leakage current |
 | Write-0 active-window energy | **46.39 fJ** | **44.04 fJ** | **42.53 fJ** | Similar magnitude across corners |
 | Write-1 active-window energy | **45.09 fJ** | **43.66 fJ** | **42.08 fJ** | Similar magnitude across corners |
 | Read-0 active-window energy | **81.33 fJ** | **79.68 fJ** | **80.44 fJ** | Very similar |
@@ -207,7 +207,7 @@ FF devices switch faster, resulting in the lowest write/read delays and the larg
 
 ## Read Disturb
 
-Read disturb is the temporary excursion of the low storage node during a read operation due to charge sharing through the access transistor.
+Read disturb is the temporary increase in value of the low storage node during a read operation due to charge sharing through the access transistor.
 
 **For stored 0 (Read-0):** Q = 0, QB = 1.8 V → monitor the rise on Q.
 
@@ -265,7 +265,7 @@ Leakage is state-dependent because different transistor stacks are OFF for store
 
 ### Hold SNM
 
-![](Week 2 and 3/Waveforms/wave_hold_snm.png)
+![](Week_2_and_3/Waveforms/wave_hold_snm.png)
 
 - Method: DC sweep of cross-coupled inverter transfer curves
 - Metric: Side length of largest inscribed square in the butterfly
@@ -273,7 +273,7 @@ Leakage is state-dependent because different transistor stacks are OFF for store
 
 ### Read SNM
 
-![](Week 2 and 3/Waveforms/wave_read_snm.png)
+![](Week_2_and_3/Waveforms/wave_read_snm.png)
 
 - Condition: WL = ON, BL/BLB precharged to VDD
 - Method: Butterfly curve with access transistors active
@@ -281,7 +281,7 @@ Leakage is state-dependent because different transistor stacks are OFF for store
 
 ### Write SNM / Write Margin
 
-![](Week 2 and 3/Waveforms/wave_write_snm.png)
+![](Week_2_and_3/Waveforms/wave_write_snm.png)
 
 - Condition: Write driver asserting BL/BLB, WL = ON
 - Method: Butterfly Curve
