@@ -1,0 +1,51 @@
+** 6T cell leakage, DC bench (cell only, no periphery)
+** Change "tt" at the end of the .lib line to ss / ff for other corners.
+.lib /home/kaavya/.ciel/ciel/sky130/versions/9233c19260cd813c3fa67dd4594fe4cc67016832/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+
+.subckt six_t wl VDD blb bl Q QB
+XM3 QB Q 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1.26 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM4 QB wl blb 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM5 Q wl bl 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM6 Q QB VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM7 QB Q VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM1 Q QB 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1.26 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+.ends
+
+* Two independent cells so each has its own supply and bitline sources.
+* Cell 0 stores 0 (q0=0), cell 1 stores 1 (q1=1.8). WL = 0, bitlines held at VDD.
+Vdd0  vdd0 0 1.8
+Vbl0  bl0  0 1.8
+Vblb0 blb0 0 1.8
+Vdd1  vdd1 0 1.8
+Vbl1  bl1  0 1.8
+Vblb1 blb1 0 1.8
+Vwl   wl   0 0
+
+Xc0 wl vdd0 blb0 bl0 q0 qb0 six_t
+Xc1 wl vdd1 blb1 bl1 q1 qb1 six_t
+
+.nodeset v(q0)=0 v(qb0)=1.8 v(q1)=1.8 v(qb1)=0
+.temp 27
+.option gmin=1e-15 abstol=1e-15
+.control
+op
+* Check the cells landed in the intended states (q0 ~ 0, q1 ~ 1.8)
+print v(q0) v(qb0) v(q1) v(qb1)
+* Total current delivered by all sources into each cell (leakage, in amps)
+let ileak0 = -(i(vdd0)+i(vbl0)+i(vblb0))
+let ileak1 = -(i(vdd1)+i(vbl1)+i(vblb1))
+print ileak0 ileak1
+
+
+let ileak0_t = -(i(vdd0)+i(vbl0)+i(vblb0))
+let ileak1_t = -(i(vdd1)+i(vbl1)+i(vblb1))
+print ileak0_t ileak1_t
+.endc
+
+.end
