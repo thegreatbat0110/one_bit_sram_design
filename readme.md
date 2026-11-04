@@ -124,10 +124,10 @@ $$t_{\text{write1,50}} = t(Q = 0.9\text{ V}) - t(WL = 0.9\text{ V})$$
 $$t_{\text{write1,90}} = t(Q = 1.62\text{ V}) - t(WL = 0.9\text{ V})$$
 
 **Read-1 @ 50%:**
-$$t_{\text{read1,50}} = t(\text{DOUT} = 0.9\text{ V}) - t(\text{read\_en} = 0.9\text{ V})$$
+$$t_{\text{read1,50}} = t(\text{DOUT} = 0.9\text{ V}) - t(\mathrm{read}_{\mathrm{en}} = 0.9\text{ V})$$
 
 **Read-1 @ 90%:**
-$$t_{\text{read1,90}} = t(\text{DOUT} = 1.62\text{ V}) - t(\text{read\_en} = 0.9\text{ V})$$
+$$t_{\text{read1,90}} = t(\text{DOUT} = 1.62\text{ V}) - t(\mathrm{read}_{\mathrm{en}} = 0.9\text{ V})$$
 
 ---
 
@@ -146,7 +146,7 @@ $$t_{\text{read1,90}} = t(\text{DOUT} = 1.62\text{ V}) - t(\text{read\_en} = 0.9
 | **Latch Resolution 0/1 (ns)** | 0.157 / 0.178 | 0.118 / 0.135 | 0.095 / 0.109 | 0.094 / 0.107 | 0.158 / 0.180 | SF $\approx$ FF, FS $\approx$ SS; resolving to 1 is $\sim 10\text{--}15\%$ slower than to 0 |
 | **Read Disturb (mV)** | 119.4 | 128.6 | 134.8 | 133.5 | 115.9 | Opposite of speed: FF/SF disturb most (+13% vs SS) |
 | **$\Delta V_{\text{BL}}$ @ Sense Enable (mV)** | 427 | 570 | 718 | 733 | 403 | FF/SF have largest swing ($\sim 1.7\times$ SS); speed vs. stability tradeoff |
-| **Lowest $V(\text{dout\_b})$ Read-0 (V)** | 1.704 | 1.699 | 1.697 | 1.671 | 1.721 | Nearly flat ($\sim 2.5\%$ spread); output stays near rail in all corners |
+| **Lowest $V(\mathrm{dout}_{\mathrm{b}})$ Read-0 (V)** | 1.704 | 1.699 | 1.697 | 1.671 | 1.721 | Nearly flat ($\sim 2.5\%$ spread); output stays near rail in all corners |
 | **DOUT Glitch Peak Read-0 (mV)** | 0.57 | 0.51 | 0.54 | 0.47 | 0.75 | Sub-mV everywhere, no clear trend; negligible |
 | **Write Energy 0/1 (pJ)** | 0.307 / 0.307 | 0.317 / 0.317 | 0.328 / 0.327 | 0.324 / 0.324 | 0.315 / 0.314 | $\sim 7\%$ rise SS $\rightarrow$ FF; symmetric for 0 and 1 |
 | **Read Energy 0/1 (pJ)** | 0.280 / 0.267 | 0.291 / 0.280 | 0.290 / 0.281 | 0.290 / 0.281 | 0.277 / 0.262 | Weak corner dependence ($\sim 5\%$); Read-0 costs $\sim 4\text{--}6\%$ more than Read-1 |
@@ -168,7 +168,7 @@ $$t_{\text{read1,90}} = t(\text{DOUT} = 1.62\text{ V}) - t(\text{read\_en} = 0.9
 | **Latch Resolution 0/1 (ns)** | 0.176 / 0.199 | 0.129 / 0.147 | 0.103 / 0.119 | 0.102 / 0.117 | 0.175 / 0.199 |
 | **Read Disturb (mV)** | 130.2 | 141.9 | 148.9 | 146.9 | 127.7 |
 | **$\Delta V_{\text{BL}}$ @ Sense Enable (mV)** | 382 | 517 | 654 | 667 | 363 |
-| **Lowest $V(\text{dout\_b})$ Read-0 (V)** | 1.709 | 1.703 | 1.702 | 1.676 | 1.724 |
+| **Lowest $V(\mathrm{dout}_{\mathrm{b}})$ Read-0 (V)** | 1.709 | 1.703 | 1.702 | 1.676 | 1.724 |
 | **DOUT Glitch Peak Read-0 (mV)** | 1.00 | 0.61 | 0.65 | 0.48 | 1.08 |
 | **Write Energy 0/1 (pJ)** | 0.306 / 0.306 | 0.317 / 0.316 | 0.331 / 0.330 | 0.321 / 0.321 | 0.331 / 0.329 |
 | **Read Energy 0/1 (pJ)** | 0.271 / 0.258 | 0.290 / 0.279 | 0.295 / 0.287 | 0.291 / 0.284 | 0.277 / 0.260 |
@@ -311,7 +311,7 @@ Capacitance sweeps on the bottleneck corner (**SF**) identify a sharp failure bo
 
 At $400\text{ fF}$ bitline loading, heavy capacitive load severely attenuates bitline differential voltage development within the fixed $140\text{ ps}$ wordline-to-sense-enable window.
 
-| Corner | $\Delta V_{\text{BL}}$ @ SAE | Winner Node Min $V(\text{dout\_b})$ | Peak $V_{\text{OUT}}$ Read-0 | Read-1 Delay (50%) | Status / Verdict |
+| Corner | $\Delta V_{\text{BL}}$ @ SAE | Winner Node Min $V(\mathrm{dout}_{\mathrm{b}})$ | Peak $V_{\text{OUT}}$ Read-0 | Read-1 Delay (50%) | Status / Verdict |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **TT** | 72.9 mV | 1.143 V | 18.0 mV | 0.238 ns | **PASS** |
 | **SS** | 53.7 mV | 1.082 V | 15.3 mV | 0.343 ns | **PASS** (Marginal $\Delta V_{\text{BL}}$) |
@@ -319,7 +319,7 @@ At $400\text{ fF}$ bitline loading, heavy capacitive load severely attenuates bi
 | **FS** | 50.8 mV | 1.372 V | 18.0 mV | 0.282 ns | **PASS** (Lowest $\Delta V_{\text{BL}}$) |
 | **SF** | 95.2 mV | **0.467 V** | **1.795 V** | 0.222 ns | **FAIL** (False-1 Glitch) |
 
-* **SF Failure Mechanism:** Under $400\text{ fF}$ load, winner node $V(\text{dout\_b})$ collapses to **$0.467\text{ V}$**, tripping the output inverter rail-to-rail to produce a full-swing **$1.795\text{ V}$ false-1 output glitch**. Skewed Fast PMOS / Slow NMOS unbalances PMOS cross-coupled recovery during high capacitive loading.
+* **SF Failure Mechanism:** Under $400\text{ fF}$ load, winner node $V(\mathrm{dout}_{\mathrm{b}})$ collapses to **$0.467\text{ V}$**, tripping the output inverter rail-to-rail to produce a full-swing **$1.795\text{ V}$ false-1 output glitch**. Skewed Fast PMOS / Slow NMOS unbalances PMOS cross-coupled recovery during high capacitive loading.
 
 ### Cold Temperature Verification ($150\text{ fF}$)
 
