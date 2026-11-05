@@ -109,7 +109,7 @@ During Write-0, $Q$ is driven LOW ($0\text{ V}$) and $QB$ HIGH ($1.8\text{ V}$).
 
 ## Timing Definitions
 
-All delays are measured from the 50% crossing of the control signal to the 50% (or 10%/90%) crossing of the output node.
+All delays are measured from the 50% crossing of the control signal to the 50% (or 10%/90%) crossing of the output node. [Reference](https://www.researchgate.net/publication/281835010_8T_Double-Ended_Read-Decoupled_SRAM_Cell)
 
 **Write-0 @ 50%:**
 $$t_{\text{write0,50}} = t(Q = 0.9\text{ V}) - t(WL = 0.9\text{ V})$$
