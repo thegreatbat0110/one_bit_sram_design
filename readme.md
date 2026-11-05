@@ -286,6 +286,8 @@ $$\Delta V_{\text{BL}} = |V(BL) - V(BLB)|$$
 
 * Extracted via largest nested square calculation on single-crossing write curves ($WL = 1.8\text{ V}$, $BL = 0\text{ V}$, $BLB = 1.8\text{ V}$).
 
+![](Week_2_and_3/Waveforms/wave_write_snm.png)
+
 | Corner | $-40\text{ }^\circ\text{C}$ | $0\text{ }^\circ\text{C}$ | $27\text{ }^\circ\text{C}$ | $85\text{ }^\circ\text{C}$ |
 | :--- | :---: | :---: | :---: | :---: |
 | **TT** | 0.7308 V | 0.7240 V | 0.7188 V | 0.7053 V |
