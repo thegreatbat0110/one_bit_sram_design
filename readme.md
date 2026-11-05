@@ -93,7 +93,7 @@ $$PR = \frac{W_{\text{PU}}}{W_{\text{ACC}}} = \frac{0.55}{0.55} = 1.00$$
 
 > *Note: Only the temperature, bitline capacitance, and process model corner were changed between simulations. $V_{\text{DD}}$ and stimulus timing were kept constant.*
 
-![](Week_2_and_3/Waveforms/wave_one_bit_final2.png)
+<img width="1758" height="995" alt="image" src="https://github.com/user-attachments/assets/93d1abc0-d7da-4e5d-95ef-9ce6b9ca4105" />
 
 During Write-0, $Q$ is driven LOW ($0\text{ V}$) and $QB$ HIGH ($1.8\text{ V}$). The state is retained until the read operation. During Read-0, $\text{DOUT}$ remains LOW without disturbing the stored value. During Write-1, $Q$ is driven HIGH and $QB$ LOW. During Read-1, $\text{DOUT}$ transitions HIGH and the stored state remains stable.
 
